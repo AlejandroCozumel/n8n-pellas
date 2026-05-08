@@ -54,6 +54,7 @@ export type PermissionMode = z.infer<typeof permissionModeSchema>;
 
 export interface GatewayConfig {
 	logLevel: 'silent' | 'error' | 'warn' | 'info' | 'debug';
+	port: number;
 	allowedOrigins: string[];
 	filesystem: { dir: string };
 	computer: { shell: { timeout: number } };
@@ -95,9 +96,11 @@ function envNumber(name: string): number | undefined {
 
 export const logLevelSchema = z.enum(['silent', 'error', 'warn', 'info', 'debug']).default('info');
 export type LogLevel = z.infer<typeof logLevelSchema>;
+export const portSchema = z.number().int().positive().default(7655);
 
 const structuralConfigSchema = z.object({
 	logLevel: logLevelSchema,
+	port: portSchema,
 	allowedOrigins: z.array(z.string()).default(['https://*.app.n8n.cloud']),
 	filesystem: z.object({ dir: z.string().default('.') }).default({}),
 	computer: z
@@ -160,6 +163,9 @@ function buildEnvConfig(): PartialStructural {
 	const logLevel = envString('LOG_LEVEL') ?? process.env.LOG_LEVEL;
 	if (logLevel) config.logLevel = logLevel;
 
+	const port = envNumber('PORT');
+	if (port !== undefined) config.port = port;
+
 	const fsDir = envString('FILESYSTEM_DIR');
 	if (fsDir) config.filesystem = { dir: fsDir };
 
@@ -179,6 +185,7 @@ function buildCliConfig(args: yargsParser.Arguments): PartialStructural {
 	const config: Record<string, unknown> = {};
 
 	if (args['log-level']) config.logLevel = args['log-level'];
+	if (args.port !== undefined) config.port = args.port;
 	if (args['allowed-origins']) {
 		const raw = args['allowed-origins'] as string | string[];
 		const rawArr = Array.isArray(raw) ? raw.map(String) : [String(raw)];
@@ -298,7 +305,7 @@ export function parseConfig(argv = process.argv.slice(2)): ParsedArgs {
 			...permissionFlags,
 		],
 		boolean: ['auto-confirm', 'non-interactive', 'help'],
-		number: ['computer-shell-timeout'],
+		number: ['computer-shell-timeout', 'port'],
 		alias: { h: 'help', d: 'dir' },
 	});
 
