@@ -1,0 +1,53 @@
+name: Deploy to Azure
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Docker Image"]
+    types: [completed]
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Container Instance
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az container create \
+              --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+              --name n8n \
+              --image ghcr.io/${{ github.repository_owner | lowercase }}/n8n:latest \
+              --registry-server ghcr.io \
+              --registry-username ${{ github.actor }} \
+              --registry-password ${{ secrets.GITHUB_TOKEN }} \
+              --ports 5678 \
+              --dns-name-label ${{ secrets.AZURE_DNS_LABEL }} \
+              --location eastus \
+              --cpu 1 \
+              --memory 2 \
+              --environment-variables \
+                N8N_HOST="${{ secrets.AZURE_DNS_LABEL }}.eastus.azurecontainer.io" \
+                N8N_PROTOCOL=https \
+                WEBHOOK_URL="https://${{ secrets.AZURE_DNS_LABEL }}.eastus.azurecontainer.io" \
+                GENERIC_TIMEZONE="${{ secrets.GENERIC_TIMEZONE }}" \
+                DB_TYPE=postgresdb \
+                DB_POSTGRESDB_HOST="${{ secrets.DB_HOST }}" \
+                DB_POSTGRESDB_PORT=5432 \
+                DB_POSTGRESDB_DATABASE=n8n \
+                DB_POSTGRESDB_USER="${{ secrets.DB_USER }}" \
+              --secure-environment-variables \
+                N8N_ENCRYPTION_KEY="${{ secrets.N8N_ENCRYPTION_KEY }}" \
+                DB_POSTGRESDB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+              --azure-file-volume-account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
+              --azure-file-volume-account-key ${{ secrets.AZURE_STORAGE_KEY }} \
+              --azure-file-volume-share-name n8n-data \
+              --azure-file-volume-mount-path /home/node/.n8n
