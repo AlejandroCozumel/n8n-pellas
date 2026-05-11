@@ -65,7 +65,7 @@ jobs:
 
           docker build \
             --build-arg N8N_VERSION="${GITHUB_SHA}" \
-            -f docker/images/n8n/Dockerfile \
+            -f docker/images/n8n/Dockerfile.azure \
             -t "${IMAGE_SHA}" \
             -t "${IMAGE_LATEST}" \
             .
