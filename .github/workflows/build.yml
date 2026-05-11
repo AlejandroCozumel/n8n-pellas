@@ -85,6 +85,7 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_USER: ${{ secrets.DB_USER }}
           GENERIC_TIMEZONE: ${{ secrets.GENERIC_TIMEZONE }}
+          N8N_AI_OPENAI_KEY: ${{ secrets.N8N_AI_OPENAI_KEY }}
           N8N_ENCRYPTION_KEY: ${{ secrets.N8N_ENCRYPTION_KEY }}
           N8N_HOST: ${{ secrets.N8N_HOST }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
@@ -113,6 +114,11 @@ jobs:
             "DB_POSTGRESDB_PASSWORD=secretref:db-password"
             "N8N_ENCRYPTION_KEY=secretref:n8n-encryption-key"
           )
+
+          if [ -n "${N8N_AI_OPENAI_KEY}" ]; then
+            SECRETS+=("n8n-ai-openai-key=${N8N_AI_OPENAI_KEY}")
+            ENV_VARS+=("N8N_AI_OPENAI_KEY=secretref:n8n-ai-openai-key")
+          fi
 
           if az containerapp show \
             --name "${AZURE_CONTAINER_APP_NAME}" \
