@@ -309,6 +309,23 @@ export const routes: RouteRecordRaw[] = [
 	},
 
 	{
+		path: '/ai-workflow-builder',
+		name: VIEWS.AI_WORKFLOW_BUILDER,
+		component: async () =>
+			await import('@/features/aiWorkflowBuilder/views/AiWorkflowBuilderView.vue'),
+		meta: {
+			layout: 'ai-workflow-builder',
+			middleware: ['authenticated'],
+			telemetry: {
+				pageCategory: 'ai',
+				getProperties() {
+					return { feature: 'ai-workflow-builder' };
+				},
+			},
+		},
+	},
+
+	{
 		path: '/workflow/:workflowId/debug/:executionId',
 		name: VIEWS.EXECUTION_DEBUG,
 		component: NodeView,
