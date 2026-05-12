@@ -6,7 +6,7 @@ import {
 	JoinColumn,
 	ManyToOne,
 	OneToMany,
-	PrimaryGeneratedColumn,
+	PrimaryColumn,
 	type Relation,
 } from '@n8n/typeorm';
 
@@ -15,7 +15,7 @@ import type { AiWorkflowBuilderMessage } from './ai-workflow-builder-message.ent
 
 @Entity({ name: 'ai_workflow_builder_conversation' })
 export class AiWorkflowBuilderConversation extends WithTimestamps {
-	@PrimaryGeneratedColumn('uuid')
+	@PrimaryColumn('uuid')
 	id: string;
 
 	@Column({ type: 'varchar', length: 36 })

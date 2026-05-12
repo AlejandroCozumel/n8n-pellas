@@ -3,21 +3,14 @@ import type {
 	AiWorkflowBuilderWorkflowOutline,
 } from '@n8n/api-types';
 import { JsonColumn, WithTimestamps, WorkflowEntity } from '@n8n/db';
-import {
-	Column,
-	Entity,
-	JoinColumn,
-	ManyToOne,
-	PrimaryGeneratedColumn,
-	type Relation,
-} from '@n8n/typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, type Relation } from '@n8n/typeorm';
 
 import type { AiWorkflowBuilderConversation } from './ai-workflow-builder-conversation.entity';
 import type { AiWorkflowBuilderMessage } from './ai-workflow-builder-message.entity';
 
 @Entity({ name: 'ai_workflow_builder_draft' })
 export class AiWorkflowBuilderDraft extends WithTimestamps {
-	@PrimaryGeneratedColumn('uuid')
+	@PrimaryColumn('uuid')
 	id: string;
 
 	@Column({ type: 'uuid' })

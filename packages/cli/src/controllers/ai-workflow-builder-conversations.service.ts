@@ -110,6 +110,7 @@ export class AiWorkflowBuilderConversationsService {
 			const conversationRepo = em.getRepository(AiWorkflowBuilderConversation);
 			const messageRepo = em.getRepository(AiWorkflowBuilderMessage);
 			const newConversation = conversationRepo.create({
+				id: randomUUID(),
 				projectId,
 				userId: user.id,
 				title: this.createTitle(content),
