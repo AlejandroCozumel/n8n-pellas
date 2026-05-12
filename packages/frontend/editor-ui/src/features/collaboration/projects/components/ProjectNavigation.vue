@@ -79,6 +79,13 @@ const home = computed<IMenuItem>(() => ({
 	},
 }));
 
+const aiWorkflowBuilder = computed<IMenuItem>(() => ({
+	id: 'ai-workflow-builder',
+	icon: 'sparkles',
+	label: locale.baseText('aiWorkflowBuilder.sidebar.label'),
+	route: { to: { name: VIEWS.AI_WORKFLOW_BUILDER } },
+}));
+
 const shared = computed<IMenuItem>(() => ({
 	id: 'shared',
 	label: locale.baseText('projects.menu.shared'),
@@ -154,6 +161,12 @@ onBeforeUnmount(() => {
 				:compact="props.collapsed"
 				:active="activeTabId === 'home'"
 				data-test-id="project-home-menu-item"
+			/>
+			<N8nMenuItem
+				:item="aiWorkflowBuilder"
+				:compact="props.collapsed"
+				:active="activeTabId === 'ai-workflow-builder'"
+				data-test-id="project-ai-workflow-builder-menu-item"
 			/>
 			<N8nMenuItem
 				v-if="projectsStore.isTeamProjectFeatureEnabled || isFoldersFeatureEnabled"

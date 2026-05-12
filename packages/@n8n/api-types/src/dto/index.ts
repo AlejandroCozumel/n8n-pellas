@@ -1,5 +1,36 @@
 export { GetNodeTypesByIdentifierRequestDto } from './node-types/get-node-types-by-identifier.dto';
 
+export {
+	AI_WORKFLOW_BUILDER_CONVERSATION_STATUSES,
+	AI_WORKFLOW_BUILDER_MESSAGE_ROLES,
+	AI_WORKFLOW_BUILDER_MESSAGE_STATUSES,
+	AI_WORKFLOW_BUILDER_RESPONSE_STATES,
+	AiWorkflowBuilderCreateConversationDto,
+	AiWorkflowBuilderListConversationsQueryDto,
+	AiWorkflowBuilderRenameConversationDto,
+	AiWorkflowBuilderSendMessageDto,
+	type AiWorkflowBuilderApplyDraftResponse,
+	type AiWorkflowBuilderAssistantMessageMetadata,
+	type AiWorkflowBuilderConversationDetail,
+	type AiWorkflowBuilderConversationStatus,
+	type AiWorkflowBuilderConversationSummary,
+	type AiWorkflowBuilderCreateDraftFromMessageResponse,
+	type AiWorkflowBuilderDraftSummary,
+	type AiWorkflowBuilderGeneratedWorkflow,
+	type AiWorkflowBuilderListConversationsResponse,
+	type AiWorkflowBuilderMessage,
+	type AiWorkflowBuilderMessageRole,
+	type AiWorkflowBuilderMessageStatus,
+	type AiWorkflowBuilderResponseState,
+	type AiWorkflowBuilderSendMessageResponse,
+	type AiWorkflowBuilderWorkflowOutline,
+	type AiWorkflowBuilderWorkflowOutlineStep,
+	assistantMessageMetadataSchema,
+	generatedWorkflowSchema,
+	workflowOutlineSchema,
+	workflowOutlineStepSchema,
+} from './ai-workflow-builder/conversation.dto';
+
 export { AiAskRequestDto } from './ai/ai-ask-request.dto';
 export { AiChatRequestDto } from './ai/ai-chat-request.dto';
 export {
